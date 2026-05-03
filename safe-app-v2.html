@@ -262,7 +262,7 @@ html, body {
   display: flex; align-items: center; justify-content: center;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.13);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.22);
 }
 .icon-bubble::before {
   content: '';
@@ -270,7 +270,7 @@ html, body {
   background: linear-gradient(145deg, rgba(255,255,255,0.22) 0%, transparent 60%);
   pointer-events: none;
 }
-.icon-bubble svg { width: 26px; height: 26px; position: relative; z-index: 1; }
+.icon-bubble svg { width: 28px; height: 28px; position: relative; z-index: 1; }
 
 .icon-label {
   font-size: 10.5px;
@@ -357,7 +357,14 @@ html, body {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(91,174,226,0.2) 0%, transparent 70%);
 }
-.cta-emoji { font-size: 32px; margin-bottom: 10px; display: block; }
+.cta-emoji {
+  width: 50px; height: 50px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.11);
+  border: 1px solid rgba(255,255,255,0.18);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
 .cta-title {
   font-family: 'Sora', sans-serif;
   font-size: 18px; font-weight: 800;
@@ -421,7 +428,6 @@ html, body {
 .course-thumb {
   height: 90px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 30px;
   position: relative;
 }
 .ct-navy { background: linear-gradient(135deg, var(--navy2), #1a3a5c); }
@@ -715,12 +721,12 @@ html, body {
   <!-- ══ HERO ══ -->
   <div class="hero-band">
     <div class="mode-pill">
-      <button class="mp-btn active" onclick="setMode('aluno',this)">✈️ Aluno</button>
-      <button class="mp-btn" onclick="setMode('visitante',this)">👤 Visitante</button>
+      <button class="mp-btn active" onclick="setMode('aluno',this)">Aluno</button>
+      <button class="mp-btn" onclick="setMode('visitante',this)">Visitante</button>
     </div>
     <div id="hero-aluno">
       <div class="hero-greeting">Bem-vindo de volta</div>
-      <div class="hero-name">Victor de <span>Pinho</span> ✈️</div>
+      <div class="hero-name">Victor de <span>Pinho</span></div>
       <div class="user-chip">
         <div class="chip-dot"></div>
         <div class="chip-label">Aluno SAFE Verificado</div>
@@ -728,7 +734,7 @@ html, body {
     </div>
     <div id="hero-visitante" style="display:none">
       <div class="hero-greeting">Olá, futuro piloto</div>
-      <div class="hero-name">Bem-vindo à <span>SAFE</span> 🛩️</div>
+      <div class="hero-name">Bem-vindo à <span>SAFE</span></div>
       <div class="visitor-chip">
         <div class="chip-dot"></div>
         <div class="chip-label">Visitante — crie sua conta</div>
@@ -840,7 +846,9 @@ html, body {
 
       <div class="section">
         <div class="cta-card">
-          <span class="cta-emoji">✈️</span>
+          <div class="cta-emoji">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+          </div>
           <div class="cta-title">Realize seu sonho de voar</div>
           <div class="cta-sub">Crie sua conta e tenha acesso completo às plataformas da SAFE Escola de Aviação.</div>
           <div class="cta-btns">
@@ -853,7 +861,9 @@ html, body {
       <div class="section-label" style="padding:0 18px">Cursos disponíveis</div>
       <div class="course-row">
         <div class="course-tile" onclick="toast('🛒 Abrindo curso PPL…')">
-          <div class="course-thumb ct-navy"><span>🛩️</span></div>
+          <div class="course-thumb ct-navy">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="white" opacity="0.92"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+          </div>
           <div class="course-info">
             <div class="course-tag">PPL</div>
             <div class="course-name">Piloto Privado de Avião</div>
@@ -861,7 +871,9 @@ html, body {
           </div>
         </div>
         <div class="course-tile" onclick="toast('🛒 Abrindo curso IFR…')">
-          <div class="course-thumb ct-blue"><span>📡</span></div>
+          <div class="course-thumb ct-blue">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.92"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" fill="white" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="rgba(26,58,92,0.6)" stroke="none"/></svg>
+          </div>
           <div class="course-info">
             <div class="course-tag">IFR</div>
             <div class="course-name">Voo por Instrumentos</div>
@@ -869,7 +881,9 @@ html, body {
           </div>
         </div>
         <div class="course-tile" onclick="toast('🛒 Abrindo curso…')">
-          <div class="course-thumb ct-teal"><span>🌤️</span></div>
+          <div class="course-thumb ct-teal">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/><path d="M9 23v-2M12 23v-2M15 23v-2" stroke-width="1.5"/></svg>
+          </div>
           <div class="course-info">
             <div class="course-tag">Met</div>
             <div class="course-name">Meteorologia Aeronáutica</div>
