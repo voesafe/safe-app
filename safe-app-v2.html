@@ -196,43 +196,42 @@ html, body {
 /* hero content must not reach the mode pill area */
 #hero-aluno, #hero-visitante { padding-right: 160px; }
 
-/* ── CURVED TRANSITION ── */
-.curve {
-  background: var(--navy2);
-  height: 28px;
-  flex-shrink: 0;
-  position: relative;
-}
-.curve::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0; top: 0;
-  background: var(--surface);
-  border-radius: 26px 26px 0 0;
-}
-
 /* ── SCROLL BODY ── */
 .scroll-body {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: 6px 0 calc(80px + var(--safe-b));
-  background: var(--surface);
+  padding: 16px 0 calc(80px + var(--safe-b));
+  background: var(--navy2);
 }
 .scroll-body::-webkit-scrollbar { display: none; }
 
 /* ── SECTION ── */
-.section { padding: 0 18px; margin-bottom: 6px; }
+.section { padding: 0 16px; margin-bottom: 12px; }
+
+/* White card — wraps icon grids and free-access sections */
+.section-card {
+  background: #fff;
+  border-radius: 22px;
+  margin: 0 16px 12px;
+  padding: 6px 16px 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+}
+
 .section-label {
   font-size: 11px;
   font-weight: 700;
-  color: var(--muted);
+  color: rgba(255,255,255,0.38);
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  margin-bottom: 14px;
-  margin-top: 22px;
+  margin-bottom: 12px;
+  margin-top: 16px;
   padding-left: 2px;
+}
+.section-card .section-label {
+  color: var(--muted);
+  margin-top: 14px;
 }
 
 /* ── APP ICON GRID ── */
@@ -742,16 +741,13 @@ html, body {
     </div>
   </div>
 
-  <!-- curve -->
-  <div class="curve"></div>
-
   <!-- ══ SCROLL BODY ══ -->
   <div class="scroll-body" id="scroll-body">
 
     <!-- ── ALUNO VIEW ── -->
     <div id="view-aluno">
 
-      <div class="section">
+      <div class="section-card">
         <div class="section-label">Plataformas</div>
         <div class="icon-grid">
 
@@ -820,10 +816,10 @@ html, body {
           </div>
 
         </div><!-- /icon-grid -->
-      </div><!-- /section -->
+      </div><!-- /section-card -->
 
       <!-- Beyond EFB — destaque -->
-      <div class="section">
+      <div class="section" style="padding:0 16px">
         <div class="section-label">Destaque</div>
         <a class="featured-card" onclick="toast('Abrindo Beyond EFB…');return false" href="#">
           <div class="fc-icon">
@@ -844,7 +840,7 @@ html, body {
     <!-- ── VISITANTE VIEW ── -->
     <div id="view-visitante" style="display:none">
 
-      <div class="section">
+      <div class="section" style="padding:0 16px">
         <div class="cta-card">
           <div class="cta-emoji">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
@@ -858,7 +854,7 @@ html, body {
         </div>
       </div>
 
-      <div class="section-label" style="padding:0 18px">Cursos disponíveis</div>
+      <div class="section-label" style="padding:0 16px">Cursos disponíveis</div>
       <div class="course-row">
         <div class="course-tile" onclick="toast('🛒 Abrindo curso PPL…')">
           <div class="course-thumb ct-navy">
@@ -892,7 +888,7 @@ html, body {
         </div>
       </div>
 
-      <div class="section" style="margin-top:6px">
+      <div class="section-card" style="margin-top:4px">
         <div class="section-label">Acesso livre</div>
         <div class="icon-grid">
           <div class="app-icon" onclick="toast('Abrindo SAFE News…')">
@@ -1017,7 +1013,7 @@ html, body {
     deferredPrompt = e;
   });
 
-  if (!isStandalone) {
+  if (!isStandalone && window.innerWidth < 768) {
     setTimeout(() => {
       const overlay = document.getElementById('pwa-overlay');
       overlay.classList.add('show');
