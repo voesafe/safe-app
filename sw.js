@@ -1,18 +1,12 @@
-const CACHE = 'safe-app-v2';
-const ASSETS = [
-  '/safe-app/',
-  '/safe-app/index.html',
-  '/safe-app/manifest.json',
-  'https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap'
-];
+const CACHE = 'safe-app-v3';
 
+// Instala sem pré-cachear nada — deixa o network-first cuidar
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
-  );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', e => {
+  // Apaga caches antigos
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
@@ -22,16 +16,21 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request).then(res => {
-        if (res && res.status === 200 && res.type === 'basic') {
+    // Tenta a rede primeiro
+    fetch(e.request)
+      .then(res => {
+        // Salva a versão nova no cache
+        if (res && res.status === 200) {
           const clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      }).catch(() => caches.match('/safe-app/index.html'));
-    })
+      })
+      .catch(() => {
+        // Só usa cache se estiver offline
+        return caches.match(e.request);
+      })
   );
 });
