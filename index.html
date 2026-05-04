@@ -50,7 +50,7 @@ html, body {
   height: 100%;
   height: 100dvh;
   overflow: hidden;
-  background: var(--white); /* home indicator fica branco igual à nav */
+  background: var(--navy2); /* home indicator mesma cor do fundo do app */
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
@@ -482,13 +482,13 @@ html, body {
 
 /* ── BOTTOM NAV ── */
 .bottom-nav {
-  position: fixed;
+  position: absolute;
   bottom: 0; left: 0; right: 0;
   background: var(--white);
   border-top: 1px solid rgba(29,41,81,0.07);
   display: flex;
-  align-items: center;
-  padding: 6px 0 env(safe-area-inset-bottom, 0px);
+  align-items: flex-end;
+  padding: 0;
   z-index: 20;
   box-shadow: 0 -8px 30px rgba(29,41,81,0.07);
 }
@@ -496,7 +496,7 @@ html, body {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; gap: 3px;
   cursor: pointer;
-  padding: 8px 0;
+  padding: 8px 0 calc(env(safe-area-inset-bottom, 0px));
   -webkit-user-select: none; user-select: none;
 }
 .tab-icon {
@@ -626,7 +626,7 @@ html, body {
     box-shadow: 0 40px 120px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.08);
     overflow: hidden;
   }
-  .bottom-nav { border-radius: 0 0 44px 44px; position: absolute; }
+  .bottom-nav { border-radius: 0 0 44px 44px; }
   .desktop-label {
     display: block !important;
     position: fixed; bottom: 24px; right: 24px;
