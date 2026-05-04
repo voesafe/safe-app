@@ -1,4 +1,4 @@
-const CACHE = 'safe-app-v3';
+const CACHE = 'safe-app-v4';
 
 // Instala sem pré-cachear nada — deixa o network-first cuidar
 self.addEventListener('install', e => {
