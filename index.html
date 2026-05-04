@@ -1275,9 +1275,11 @@ html, body {
     el.addEventListener('animationend', () => { el.style.animation = 'none'; }, { once: true });
   });
 
-  /* Register Service Worker */
+  /* Limpa service workers antigos */
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(r => r.unregister());
+    });
   }
 </script>
 </body>
