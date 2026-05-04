@@ -682,6 +682,64 @@ html, body {
 
 /* ── STANDALONE (instalado na tela inicial) ── */
 
+
+/* ── DARK / LIGHT MODE ── */
+:root {
+  --mode-bg:       #16203f;
+  --mode-surface:  #f2f4f8;
+  --mode-card:     #ffffff;
+  --mode-text:     #1D2951;
+  --mode-muted:    #8892a4;
+  --mode-border:   rgba(29,41,81,0.07);
+  --mode-nav-bg:   #ffffff;
+  --mode-icon-label: #1D2951;
+  --mode-section-label: rgba(255,255,255,0.38);
+}
+
+[data-theme="light"] {
+  --mode-bg:       #e8ecf4;
+  --mode-surface:  #f2f4f8;
+  --mode-card:     #ffffff;
+  --mode-text:     #1D2951;
+  --mode-muted:    #8892a4;
+  --mode-border:   rgba(29,41,81,0.07);
+  --mode-nav-bg:   #ffffff;
+  --mode-icon-label: #1D2951;
+  --mode-section-label: var(--muted);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --mode-bg:       #e8ecf4;
+    --mode-surface:  #f2f4f8;
+    --mode-card:     #ffffff;
+    --mode-text:     #1D2951;
+    --mode-muted:    #8892a4;
+    --mode-border:   rgba(29,41,81,0.07);
+    --mode-nav-bg:   #ffffff;
+    --mode-icon-label: #1D2951;
+    --mode-section-label: var(--muted);
+  }
+}
+
+/* Aplica modo claro/escuro nos elementos */
+.scroll-body { background: var(--mode-bg) !important; }
+.section-card { background: var(--mode-card) !important; }
+.bottom-nav { background: var(--mode-nav-bg) !important; border-top-color: var(--mode-border) !important; }
+.icon-label { color: var(--mode-icon-label) !important; }
+.section-label { color: var(--mode-section-label) !important; }
+.news-card, .news-mini, .course-tile, .stat-box { background: var(--mode-card) !important; }
+.menu-item { background: var(--mode-card); }
+.perfil-stats { background: var(--mode-card); }
+
+/* Modo claro: body e shell */
+[data-theme="light"] body { background: #e8ecf4 !important; }
+[data-theme="light"] #shell { background: var(--mode-surface) !important; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) body { background: #e8ecf4 !important; }
+  :root:not([data-theme="dark"]) #shell { background: var(--mode-surface) !important; }
+}
+
 </style>
 </head>
 <body>
@@ -699,6 +757,10 @@ html, body {
         <div class="brand-wordmark">SAFE <em>APP</em></div>
       </div>
       <div class="hdr-actions">
+        <button class="hdr-btn" id="theme-btn" onclick="toggleTheme()" title="Alternar tema">
+          <svg id="icon-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg id="icon-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
         <button class="hdr-btn" onclick="toast('🔔 Sem novas notificações')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         </button>
@@ -1287,9 +1349,43 @@ html, body {
   }
 
   /* Remove animação após primeiro play */
+  document.addEventListener('DOMContentLoaded', initTheme);
+
   document.querySelectorAll('.app-icon, .featured-card, .course-tile, .news-card, .news-mini').forEach(el => {
     el.addEventListener('animationend', () => { el.style.animation = 'none'; }, { once: true });
   });
+
+
+  /* ── DARK / LIGHT MODE ── */
+  function initTheme() {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    applyTheme(theme);
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    const isDark = theme === 'dark';
+    const iconDark = document.getElementById('icon-dark');
+    const iconLight = document.getElementById('icon-light');
+    if (iconDark) iconDark.style.display = isDark ? 'block' : 'none';
+    if (iconLight) iconLight.style.display = isDark ? 'none' : 'block';
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  }
+
+  // Detecta mudança do sistema em tempo real
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('theme')) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+
 
   /* Limpa service workers antigos */
   if ('serviceWorker' in navigator) {
