@@ -10,6 +10,17 @@
 <meta name="description" content="SAFE Escola de Aviação — acesso rápido a todas as plataformas">
 <link rel="manifest" href="manifest.json">
 <title>SAFE App</title>
+<script>
+  // Limpa TODOS os service workers e caches ao abrir
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(r => r.unregister());
+    });
+  }
+  if ('caches' in window) {
+    caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
