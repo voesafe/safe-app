@@ -174,9 +174,12 @@ html, body {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  /* FIX: usa safe-area real + altura da nav */
   padding-bottom: calc(72px + var(--safe-b) + 8px);
   background: var(--navy2);
+  /* isola o scroll — impede que o conteúdo sobreponha elementos irmãos */
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
 }
 .scroll-body::-webkit-scrollbar { display: none; }
 
@@ -626,9 +629,10 @@ html, body {
 .hero-banner {
   position: relative;
   width: 100%;
-  height: 170px;
+  height: 160px;
   overflow: hidden;
-  flex-shrink: 0;
+  flex-shrink: 0;   /* nunca encolhe — fica fixo no layout */
+  z-index: 1;
 }
 .hero-banner img {
   width: 100%;
