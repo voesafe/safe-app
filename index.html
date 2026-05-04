@@ -1223,7 +1223,7 @@ html, body {
     deferredPrompt = e;
   });
 
-  if (!isStandalone && window.innerWidth < 768) {
+  if (!isStandalone && !localStorage.getItem('pwa-dismissed') && window.innerWidth < 768) {
     setTimeout(showPWA, 2000);
   }
 
@@ -1253,6 +1253,7 @@ html, body {
   function closePwa(e) {
     if (e && e.target !== document.getElementById('pwa-overlay')) return;
     document.getElementById('pwa-overlay').classList.remove('show');
+    localStorage.setItem('pwa-dismissed', '1');
   }
 
   /* ── TOAST ── */
