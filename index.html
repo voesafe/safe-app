@@ -1,2 +1,1103 @@
 <!DOCTYPE html>
-<meta http-equiv="refresh" content="0; url=safe-app-v2.html">
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SAFE App">
+<meta name="theme-color" content="#1D2951">
+<title>SAFE App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0; padding: 0; box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+:root {
+  --navy:    #1D2951;
+  --navy2:   #16203f;
+  --blue:    #5BAEE2;
+  --teal:    #60C0BF;
+  --white:   #ffffff;
+  --surface: #f2f4f8;
+  --muted:   #8892a4;
+  --safe-h: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--navy2);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ── SHELL ── */
+#shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── STATUS BAR PLACEHOLDER ── */
+.status-bar {
+  background: var(--navy2);
+  height: calc(var(--safe-h) + 14px);
+  min-height: 14px;
+  flex-shrink: 0;
+}
+
+/* ── HEADER ── */
+.app-header {
+  background: var(--navy2);
+  padding: 10px 20px 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+/* noise texture overlay */
+.app-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; z-index: 1;
+}
+
+.brand {
+  display: flex; align-items: center; gap: 9px;
+}
+.brand-mark {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.07);
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.brand-mark img {
+  width: 24px; height: 24px;
+  object-fit: contain;
+}
+.brand-wordmark {
+  font-family: 'Sora', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: 0.3px;
+}
+.brand-wordmark em {
+  font-style: normal;
+  color: var(--teal);
+}
+
+.hdr-actions { display: flex; gap: 6px; }
+.hdr-btn {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: rgba(255,255,255,0.75);
+  transition: background 0.15s;
+}
+.hdr-btn:active { background: rgba(255,255,255,0.14); }
+
+/* ── HERO BAND ── */
+.hero-band {
+  background: var(--navy2);
+  padding: 18px 20px 24px;
+  position: relative; z-index: 1;
+  flex-shrink: 0;
+}
+
+/* decorative circle */
+.hero-band::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -60px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(91,174,226,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-greeting {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+.hero-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--white);
+  margin-top: 3px;
+  line-height: 1.15;
+}
+.hero-name span { color: var(--teal); }
+
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  background: rgba(96,192,191,0.15);
+  border: 1px solid rgba(96,192,191,0.3);
+  border-radius: 30px;
+  padding: 4px 11px 4px 6px;
+}
+.chip-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 2px rgba(96,192,191,0.35);
+  flex-shrink: 0;
+}
+.chip-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--teal);
+  letter-spacing: 0.2px;
+}
+
+.visitor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 30px;
+  padding: 4px 11px 4px 6px;
+}
+.visitor-chip .chip-dot { background: rgba(255,255,255,0.4); box-shadow: none; }
+.visitor-chip .chip-label { color: rgba(255,255,255,0.55); }
+
+/* hero content must not reach the mode pill area */
+#hero-aluno, #hero-visitante { padding-right: 160px; }
+
+/* ── SCROLL BODY ── */
+.scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 0 calc(80px + var(--safe-b));
+  background: var(--navy2);
+}
+.scroll-body::-webkit-scrollbar { display: none; }
+
+/* ── SECTION ── */
+.section { padding: 0 16px; margin-bottom: 12px; }
+
+/* White card — wraps icon grids and free-access sections */
+.section-card {
+  background: #fff;
+  border-radius: 22px;
+  margin: 0 16px 12px;
+  padding: 6px 16px 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.38);
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  margin-top: 16px;
+  padding-left: 2px;
+}
+.section-card .section-label {
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+/* ── APP ICON GRID ── */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  padding: 6px 2px;
+  border-radius: 16px;
+  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+  -webkit-user-select: none; user-select: none;
+  text-decoration: none;
+}
+.app-icon:active { transform: scale(0.88); }
+
+.icon-bubble {
+  width: 60px; height: 60px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+}
+.icon-bubble::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(145deg, rgba(255,255,255,0.22) 0%, transparent 60%);
+  pointer-events: none;
+}
+.icon-bubble svg { width: 28px; height: 28px; position: relative; z-index: 1; }
+
+.icon-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--navy);
+  text-align: center;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+}
+
+/* locked icon */
+.app-icon.locked .icon-bubble { opacity: 0.38; }
+.app-icon.locked .icon-label { opacity: 0.38; }
+.app-icon.locked .lock-badge {
+  position: absolute;
+  bottom: -3px; right: -3px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+/* ── FEATURED CARD (wide) ── */
+.featured-card {
+  background: var(--navy2);
+  border-radius: 20px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s;
+  text-decoration: none;
+}
+.featured-card:active { transform: scale(0.98); }
+.featured-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(91,174,226,0.18) 0%, rgba(96,192,191,0.1) 100%);
+}
+.featured-card::after {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(96,192,191,0.2) 0%, transparent 70%);
+}
+.fc-icon {
+  width: 50px; height: 50px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.1);
+  flex-shrink: 0;
+  position: relative; z-index: 1;
+}
+.fc-icon svg { width: 24px; height: 24px; }
+.fc-body { flex: 1; position: relative; z-index: 1; }
+.fc-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 14px; font-weight: 700;
+  color: var(--white);
+}
+.fc-sub { font-size: 11.5px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.fc-arrow { position: relative; z-index: 1; color: rgba(255,255,255,0.4); }
+
+/* ── CTA VISITANTE ── */
+.cta-card {
+  background: linear-gradient(135deg, var(--navy2) 0%, #1a3a5c 100%);
+  border-radius: 20px;
+  padding: 22px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-card::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(91,174,226,0.2) 0%, transparent 70%);
+}
+.cta-emoji {
+  width: 50px; height: 50px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.11);
+  border: 1px solid rgba(255,255,255,0.18);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.cta-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px; font-weight: 800;
+  color: white; line-height: 1.2;
+  position: relative; z-index: 1;
+}
+.cta-sub {
+  font-size: 13px; color: rgba(255,255,255,0.6);
+  margin-top: 8px; line-height: 1.5;
+  position: relative; z-index: 1;
+}
+.cta-btns {
+  display: flex; gap: 10px;
+  margin-top: 18px;
+  position: relative; z-index: 1;
+}
+.btn-primary {
+  flex: 1;
+  background: var(--teal);
+  color: var(--navy2);
+  border: none; border-radius: 12px;
+  padding: 13px 16px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-primary:active { opacity: 0.82; }
+.btn-ghost {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 13px 18px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── COURSE ROW ── */
+.course-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 2px 18px 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.course-row::-webkit-scrollbar { display: none; }
+
+.course-tile {
+  flex-shrink: 0;
+  width: 160px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(29,41,81,0.09);
+  transition: transform 0.15s;
+}
+.course-tile:active { transform: scale(0.97); }
+.course-thumb {
+  height: 90px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.ct-navy { background: linear-gradient(135deg, var(--navy2), #1a3a5c); }
+.ct-blue { background: linear-gradient(135deg, #1a3a5c, #2a5480); }
+.ct-teal { background: linear-gradient(135deg, #1a4040, #1a3a5c); }
+
+.course-info { padding: 10px 12px 12px; }
+.course-tag {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 4px;
+}
+.course-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 12px; font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.course-price {
+  font-size: 13px; font-weight: 700;
+  color: var(--teal);
+  margin-top: 7px;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid rgba(29,41,81,0.07);
+  display: flex;
+  padding: 10px 0 calc(10px + var(--safe-b));
+  z-index: 20;
+  box-shadow: 0 -8px 30px rgba(29,41,81,0.07);
+}
+
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 0;
+  -webkit-user-select: none; user-select: none;
+}
+.tab-icon {
+  width: 48px; height: 30px;
+  border-radius: 15px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  background: transparent;
+  transition: color 0.2s, background 0.22s;
+}
+.tab-label {
+  font-size: 10px; font-weight: 600;
+  color: var(--muted);
+  transition: color 0.2s, font-weight 0.2s;
+  letter-spacing: 0.1px;
+}
+.nav-tab.active .tab-icon { color: var(--navy); background: rgba(29,41,81,0.08); }
+.nav-tab.active .tab-label { color: var(--navy); font-weight: 700; }
+
+/* ── MODE SWITCHER ── */
+.mode-pill {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  z-index: 50;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 3px;
+  display: flex;
+  gap: 2px;
+}
+.mp-btn {
+  padding: 5px 11px;
+  border-radius: 14px;
+  border: none;
+  background: transparent;
+  font-family: 'Sora', sans-serif;
+  font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.mp-btn.active {
+  background: var(--white);
+  color: var(--navy);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+}
+
+/* ── PWA BANNER ── */
+#pwa-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(14,20,40,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+}
+#pwa-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.pwa-sheet {
+  width: 100%;
+  background: var(--white);
+  border-radius: 28px 28px 0 0;
+  padding: 10px 22px calc(22px + var(--safe-b));
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.34,1.2,0.64,1);
+}
+#pwa-overlay.show .pwa-sheet { transform: translateY(0); }
+
+.pwa-handle {
+  width: 36px; height: 4px;
+  background: #e0e3ea;
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+.pwa-top {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 16px;
+}
+.pwa-app-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  background: var(--navy2);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pwa-app-icon img { width: 40px; height: 40px; object-fit: contain; }
+.pwa-app-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px; font-weight: 800;
+  color: var(--navy);
+}
+.pwa-app-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.ios-guide {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.ios-step {
+  display: flex; align-items: center; gap: 12px;
+}
+.ios-step-n {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: white;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ios-step span { font-size: 13px; color: var(--navy); line-height: 1.4; }
+.ios-step strong { font-weight: 700; }
+
+.pwa-btns { display: flex; gap: 10px; }
+.pwa-btn-main {
+  flex: 1;
+  background: var(--navy2);
+  color: white;
+  border: none; border-radius: 14px;
+  padding: 15px;
+  font-family: 'Sora', sans-serif;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.pwa-btn-main:active { opacity: 0.82; }
+.pwa-btn-dismiss {
+  background: var(--surface);
+  color: var(--muted);
+  border: none; border-radius: 14px;
+  padding: 15px 18px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── TOAST ── */
+#toast {
+  position: absolute;
+  top: 80px;
+  left: 50%; transform: translateX(-50%) translateY(-8px);
+  background: rgba(29,41,81,0.92);
+  backdrop-filter: blur(10px);
+  color: white;
+  border-radius: 20px;
+  padding: 9px 18px;
+  font-size: 13px; font-weight: 500;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  white-space: nowrap;
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.85) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.app-icon, .featured-card, .course-tile {
+  animation: popIn 0.38s cubic-bezier(0.34,1.4,0.64,1) both;
+}
+.app-icon:nth-child(1)  { animation-delay: 0.04s; }
+.app-icon:nth-child(2)  { animation-delay: 0.08s; }
+.app-icon:nth-child(3)  { animation-delay: 0.12s; }
+.app-icon:nth-child(4)  { animation-delay: 0.16s; }
+.app-icon:nth-child(5)  { animation-delay: 0.20s; }
+.app-icon:nth-child(6)  { animation-delay: 0.24s; }
+.app-icon:nth-child(7)  { animation-delay: 0.28s; }
+.app-icon:nth-child(8)  { animation-delay: 0.32s; }
+
+/* ── DESKTOP WRAPPER ── */
+@media (min-width: 480px) {
+  body {
+    background: #0e1428;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh;
+  }
+  #shell {
+    height: 844px;
+    border-radius: 44px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.08);
+    overflow: hidden;
+  }
+  .bottom-nav { border-radius: 0 0 44px 44px; }
+  .desktop-label {
+    display: block !important;
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 12px 16px;
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+.desktop-label { display: none; }
+</style>
+</head>
+<body>
+
+<div id="shell">
+  <div class="status-bar"></div>
+
+  <!-- ══ HEADER ══ -->
+  <div class="app-header">
+    <div class="header-row">
+      <div class="brand">
+        <div class="brand-mark">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231D2951'/%3E%3C/svg%3E" alt="" id="logo-placeholder">
+        </div>
+        <div class="brand-wordmark">SAFE <em>APP</em></div>
+      </div>
+      <div class="hdr-actions">
+        <button class="hdr-btn" onclick="toast('🔔 Sem notificações')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <div class="hero-band">
+    <div class="mode-pill">
+      <button class="mp-btn active" onclick="setMode('aluno',this)">Aluno</button>
+      <button class="mp-btn" onclick="setMode('visitante',this)">Visitante</button>
+    </div>
+    <div id="hero-aluno">
+      <div class="hero-greeting">Bem-vindo de volta</div>
+      <div class="hero-name">Victor de <span>Pinho</span></div>
+      <div class="user-chip">
+        <div class="chip-dot"></div>
+        <div class="chip-label">Aluno SAFE Verificado</div>
+      </div>
+    </div>
+    <div id="hero-visitante" style="display:none">
+      <div class="hero-greeting">Olá, futuro piloto</div>
+      <div class="hero-name">Bem-vindo à <span>SAFE</span></div>
+      <div class="visitor-chip">
+        <div class="chip-dot"></div>
+        <div class="chip-label">Visitante — crie sua conta</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCROLL BODY ══ -->
+  <div class="scroll-body" id="scroll-body">
+
+    <!-- ── ALUNO VIEW ── -->
+    <div id="view-aluno">
+
+      <div class="section-card">
+        <div class="section-label">Plataformas</div>
+        <div class="icon-grid">
+
+          <!-- Cavok -->
+          <div class="app-icon" onclick="toast('Abrindo Cavok…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#2563a8,#1a4a80)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div class="icon-label">Cavok</div>
+          </div>
+
+          <!-- Portal do Aluno -->
+          <div class="app-icon" onclick="toast('Abrindo Portal do Aluno…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#1a7a78,#145e5d)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <div class="icon-label">Portal do Aluno</div>
+          </div>
+
+          <!-- SafeDocs -->
+          <div class="app-icon" onclick="toast('Abrindo SafeDocs…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#1D2951,#243565)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="icon-label">SafeDocs</div>
+          </div>
+
+          <!-- Relprev -->
+          <div class="app-icon" onclick="toast('Abrindo Relprev…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#b83232,#8c2020)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div class="icon-label">Relprev</div>
+          </div>
+
+          <!-- Guia do Aluno -->
+          <div class="app-icon" onclick="toast('Abrindo Guia do Aluno…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#2a8a6a,#1e6650)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+            </div>
+            <div class="icon-label">Guia do Aluno</div>
+          </div>
+
+          <!-- SAFE News -->
+          <div class="app-icon" onclick="toast('Abrindo SAFE News…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#b87c12,#8c5c08)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8V6Z"/></svg>
+            </div>
+            <div class="icon-label">SAFE News</div>
+          </div>
+
+          <!-- Site Oficial -->
+          <div class="app-icon" onclick="toast('Abrindo Site Oficial…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#3a3a5c,#2a2a44)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <div class="icon-label">Site Oficial</div>
+          </div>
+
+          <!-- Loja -->
+          <div class="app-icon" onclick="toast('Abrindo Loja SAFE…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#1a7a78,#145e5d)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <div class="icon-label">Loja</div>
+          </div>
+
+        </div><!-- /icon-grid -->
+      </div><!-- /section-card -->
+
+      <!-- Beyond EFB — destaque -->
+      <div class="section" style="padding:0 16px">
+        <div class="section-label">Destaque</div>
+        <a class="featured-card" onclick="toast('Abrindo Beyond EFB…');return false" href="#">
+          <div class="fc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="fc-body">
+            <div class="fc-name">Beyond EFB</div>
+            <div class="fc-sub">EFB oficial da SAFE — Acesso PRO</div>
+          </div>
+          <div class="fc-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </a>
+      </div>
+
+    </div><!-- /view-aluno -->
+
+    <!-- ── VISITANTE VIEW ── -->
+    <div id="view-visitante" style="display:none">
+
+      <div class="section" style="padding:0 16px">
+        <div class="cta-card">
+          <div class="cta-emoji">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+          </div>
+          <div class="cta-title">Realize seu sonho de voar</div>
+          <div class="cta-sub">Crie sua conta e tenha acesso completo às plataformas da SAFE Escola de Aviação.</div>
+          <div class="cta-btns">
+            <button class="btn-primary" onclick="toast('📝 Redirecionando para cadastro…')">Criar conta grátis</button>
+            <button class="btn-ghost" onclick="toast('🔐 Abrindo login…')">Entrar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="padding:0 16px">Cursos disponíveis</div>
+      <div class="course-row">
+        <div class="course-tile" onclick="toast('🛒 Abrindo curso PPL…')">
+          <div class="course-thumb ct-navy">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="white" opacity="0.92"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+          </div>
+          <div class="course-info">
+            <div class="course-tag">PPL</div>
+            <div class="course-name">Piloto Privado de Avião</div>
+            <div class="course-price">R$ 497</div>
+          </div>
+        </div>
+        <div class="course-tile" onclick="toast('🛒 Abrindo curso IFR…')">
+          <div class="course-thumb ct-blue">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.92"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" fill="white" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="rgba(26,58,92,0.6)" stroke="none"/></svg>
+          </div>
+          <div class="course-info">
+            <div class="course-tag">IFR</div>
+            <div class="course-name">Voo por Instrumentos</div>
+            <div class="course-price">R$ 397</div>
+          </div>
+        </div>
+        <div class="course-tile" onclick="toast('🛒 Abrindo curso…')">
+          <div class="course-thumb ct-teal">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/><path d="M9 23v-2M12 23v-2M15 23v-2" stroke-width="1.5"/></svg>
+          </div>
+          <div class="course-info">
+            <div class="course-tag">Met</div>
+            <div class="course-name">Meteorologia Aeronáutica</div>
+            <div class="course-price">R$ 197</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card" style="margin-top:4px">
+        <div class="section-label">Acesso livre</div>
+        <div class="icon-grid">
+          <div class="app-icon" onclick="toast('Abrindo SAFE News…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#b87c12,#8c5c08)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8V6Z"/></svg>
+            </div>
+            <div class="icon-label">SAFE News</div>
+          </div>
+          <div class="app-icon" onclick="toast('Abrindo Site Oficial…')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#3a3a5c,#2a2a44)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <div class="icon-label">Site Oficial</div>
+          </div>
+          <div class="app-icon locked" onclick="toast('🔒 Disponível após matrícula')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#c0c0c0,#a0a0a0);position:relative">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              <div class="lock-badge"><svg width="9" height="10" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            </div>
+            <div class="icon-label">Portal do Aluno</div>
+          </div>
+          <div class="app-icon locked" onclick="toast('🔒 Disponível após matrícula')">
+            <div class="icon-bubble" style="background:linear-gradient(145deg,#c0c0c0,#a0a0a0);position:relative">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <div class="lock-badge"><svg width="9" height="10" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            </div>
+            <div class="icon-label">Cavok</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /view-visitante -->
+
+  </div><!-- /scroll-body -->
+
+  <!-- ══ BOTTOM NAV ══ -->
+  <nav class="bottom-nav">
+    <div class="nav-tab active" id="tab-home" onclick="navTap(this,'🏠 Início')">
+      <div class="tab-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div class="tab-label">Início</div>
+    </div>
+    <div class="nav-tab" onclick="navTap(this,'🔍 Busca')">
+      <div class="tab-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div class="tab-label">Buscar</div>
+    </div>
+    <div class="nav-tab" onclick="navTap(this,'🛒 Loja SAFE')">
+      <div class="tab-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </div>
+      <div class="tab-label">Loja</div>
+    </div>
+    <div class="nav-tab" onclick="navTap(this,'👤 Meu Perfil')">
+      <div class="tab-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="tab-label">Perfil</div>
+    </div>
+  </nav>
+
+  <!-- ══ PWA BANNER ══ -->
+  <div id="pwa-overlay" onclick="closePwa(event)">
+    <div class="pwa-sheet">
+      <div class="pwa-handle"></div>
+      <div class="pwa-top">
+        <div class="pwa-app-icon">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231D2951'/%3E%3C/svg%3E" alt="SAFE" id="pwa-logo">
+        </div>
+        <div>
+          <div class="pwa-app-name">SAFE App</div>
+          <div class="pwa-app-sub">Instalar na tela de início</div>
+        </div>
+        <button onclick="closePwa()" style="margin-left:auto;background:none;border:none;font-size:22px;color:#9aa3b8;cursor:pointer;line-height:1;padding:4px">×</button>
+      </div>
+
+      <div class="ios-guide" id="ios-guide">
+        <div class="ios-step"><div class="ios-step-n">1</div><span>Toque em <strong>Compartilhar</strong> na barra do Safari</span></div>
+        <div class="ios-step"><div class="ios-step-n">2</div><span>Role e toque em <strong>"Adicionar à Tela de Início"</strong></span></div>
+        <div class="ios-step"><div class="ios-step-n">3</div><span>Toque em <strong>Adicionar</strong> — pronto! ✅</span></div>
+      </div>
+
+      <div class="pwa-btns">
+        <button class="pwa-btn-main" id="pwa-main-btn" onclick="installPWA()">⬇️ Instalar agora</button>
+        <button class="pwa-btn-dismiss" onclick="closePwa()">Agora não</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- toast -->
+  <div id="toast"></div>
+
+</div><!-- /shell -->
+
+<div class="desktop-label">
+  📱 Simulação mobile<br>Versão real: hospede o arquivo<br>e acesse pelo celular
+</div>
+
+<script>
+  /* ── Logo inline ── */
+  // Inject the SAFE logo as base64 from the uploaded file path
+  // Since we can't load /mnt paths in browser, we'll use SVG recreation of the logo
+  const logoSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
+    <circle cx="50" cy="50" r="50" fill="#1D2951"/>
+    <path d="M65 30 Q75 40 60 50 Q75 60 65 70" stroke="#5BAEE2" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M35 30 Q25 40 40 50 Q25 60 35 70" stroke="#60C0BF" stroke-width="10" fill="none" stroke-linecap="round"/>
+  </svg>`;
+  const logoB64 = 'data:image/svg+xml;base64,' + btoa(logoSVG);
+  document.querySelectorAll('#logo-placeholder, #pwa-logo').forEach(el => {
+    el.src = logoB64;
+  });
+
+  /* ── PWA ── */
+  let deferredPrompt = null;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  if (!isStandalone && window.innerWidth < 768) {
+    setTimeout(() => {
+      const overlay = document.getElementById('pwa-overlay');
+      overlay.classList.add('show');
+      if (isIOS) {
+        document.getElementById('ios-guide').style.display = 'flex';
+        document.getElementById('pwa-main-btn').style.display = 'none';
+      }
+    }, 1600);
+  }
+
+  function installPWA() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(c => {
+        if (c.outcome === 'accepted') toast('✅ SAFE App instalado!');
+        deferredPrompt = null;
+        closePwa();
+      });
+    } else {
+      toast('📱 Use o menu do navegador para instalar');
+      closePwa();
+    }
+  }
+
+  function closePwa(e) {
+    if (e && e.target !== document.getElementById('pwa-overlay')) return;
+    document.getElementById('pwa-overlay').classList.remove('show');
+  }
+
+  /* ── Mode switch ── */
+  function setMode(mode, btn) {
+    document.querySelectorAll('.mp-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const isAluno = mode === 'aluno';
+
+    const fade = (hideEl, showEl) => {
+      hideEl.style.transition = 'opacity 0.15s';
+      hideEl.style.opacity = '0';
+      setTimeout(() => {
+        hideEl.style.display = 'none';
+        hideEl.style.transition = '';
+        hideEl.style.opacity = '';
+        showEl.style.opacity = '0';
+        showEl.style.display = 'block';
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          showEl.style.transition = 'opacity 0.22s';
+          showEl.style.opacity = '1';
+          setTimeout(() => { showEl.style.transition = ''; showEl.style.opacity = ''; }, 220);
+        }));
+      }, 150);
+    };
+
+    fade(
+      document.getElementById(isAluno ? 'view-visitante' : 'view-aluno'),
+      document.getElementById(isAluno ? 'view-aluno'     : 'view-visitante')
+    );
+    fade(
+      document.getElementById(isAluno ? 'hero-visitante' : 'hero-aluno'),
+      document.getElementById(isAluno ? 'hero-aluno'     : 'hero-visitante')
+    );
+    document.getElementById('scroll-body').scrollTop = 0;
+  }
+
+  /* Remove popIn after first play so mode switch doesn't re-trigger it */
+  document.querySelectorAll('.app-icon, .featured-card, .course-tile').forEach(el => {
+    el.addEventListener('animationend', () => { el.style.animation = 'none'; }, { once: true });
+  });
+
+  /* ── Toast ── */
+  let tt;
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(tt);
+    tt = setTimeout(() => el.classList.remove('show'), 2200);
+  }
+
+  /* ── Nav ── */
+  function navTap(el, msg) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    toast(msg);
+  }
+</script>
+</body>
+</html>
