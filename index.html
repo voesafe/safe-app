@@ -47,10 +47,9 @@
 }
 
 html, body {
-  height: 100%;
-  height: 100dvh;
+  height: 100svh;
   overflow: hidden;
-  background: var(--navy2); /* home indicator mesma cor do fundo do app */
+  background: var(--navy2);
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
@@ -58,8 +57,7 @@ html, body {
 #shell {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  height: 100dvh;
+  height: 100svh; /* small viewport height — exclui barras do browser */
   max-width: 430px;
   margin: 0 auto;
   background: var(--surface);
@@ -487,8 +485,8 @@ html, body {
   background: var(--white);
   border-top: 1px solid rgba(29,41,81,0.07);
   display: flex;
-  align-items: flex-end;
-  padding: 0;
+  align-items: center;
+  padding: 6px 0 env(safe-area-inset-bottom, 0px);
   z-index: 20;
   box-shadow: 0 -8px 30px rgba(29,41,81,0.07);
 }
@@ -496,7 +494,7 @@ html, body {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; gap: 3px;
   cursor: pointer;
-  padding: 8px 0 calc(env(safe-area-inset-bottom, 0px));
+  padding: 8px 0;
   -webkit-user-select: none; user-select: none;
 }
 .tab-icon {
